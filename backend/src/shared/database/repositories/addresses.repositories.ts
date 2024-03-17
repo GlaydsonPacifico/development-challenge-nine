@@ -10,6 +10,10 @@ export class AddressesRepository {
     return this.prismaService.address.create(createDto);
   }
 
+  update(updateDto: Prisma.AddressUpdateArgs) {
+    return this.prismaService.address.update(updateDto)
+  }
+
   findUnique(findUniqueDto: Prisma.AddressFindUniqueArgs) {
     return this.prismaService.address.findUnique(findUniqueDto);
   }

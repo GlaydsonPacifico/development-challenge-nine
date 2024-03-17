@@ -14,4 +14,4 @@ import { ViaCepService } from './services/via-cep.service';
   ],
   exports: [AddressesService],
 })
-export class AddressesModule {}
+export class AddressesModule { }

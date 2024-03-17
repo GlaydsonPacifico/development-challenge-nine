@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AddressesRepository } from 'src/shared/database/repositories/addresses.repositories';
+import { UpdateAddressDto } from '../dto/update-address.dto';
 import { ViaCepService } from './via-cep.service';
 
 @Injectable()
@@ -7,9 +8,9 @@ export class AddressesService {
   constructor(
     private readonly addressesRepo: AddressesRepository,
     private readonly viaCepService: ViaCepService,
-  ) {}
+  ) { }
 
-  async findByZipCoded(zipCode: string, number: number) {
+  async findByZipCode(zipCode: string, number: number) {
     return await this.addressesRepo.findByZipCode({
       where: { zipCode, number },
     });
@@ -32,5 +33,23 @@ export class AddressesService {
         zipCode,
       },
     });
+  }
+  async update(id: string, updateAddressDto: UpdateAddressDto) {
+    const address = await this.addressesRepo.findUnique({
+      where: { id },
+    });
+
+    if (!address) {
+      throw new NotFoundException('Endereço não encontrado');
+    }
+
+    const updatedAddress = await this.addressesRepo.update({
+      where: { id },
+      data: {
+        ...updateAddressDto,
+      },
+    });
+
+    return updatedAddress;
   }
 }
