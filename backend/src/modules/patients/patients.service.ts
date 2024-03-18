@@ -120,7 +120,12 @@ export class PatientsService {
       return dateString;
     }
 
+    if (typeof dateString === 'string' && dateString.includes('-')) {
+      return new Date(dateString);
+    }
+
     const [day, month, year] = dateString.split('-').map(Number);
     return new Date(year, month - 1, day);
   }
 }
+

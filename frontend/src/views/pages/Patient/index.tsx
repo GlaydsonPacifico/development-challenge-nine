@@ -5,6 +5,7 @@ import { usePatientController } from "./usePatientController";
 
 export function Patient() {
   const { patients } = usePatientController();
+
   return (
     <>
       <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

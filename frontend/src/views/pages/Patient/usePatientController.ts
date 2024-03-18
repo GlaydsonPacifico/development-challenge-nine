@@ -1,10 +1,9 @@
 import { usePatient } from "../../../app/hooks/usePatient";
 
 export function usePatientController() {
-  const { patients, isLoading } = usePatient();
+  const { patients } = usePatient();
 
   return {
     patients,
-    isLoading,
-  }
+  };
 }

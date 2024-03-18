@@ -1,5 +1,9 @@
+import { create } from './create';
 import { getAll } from './getAll';
+import { remove } from './remove';
 
-export const PatientService = {
-  getAll
+export const patientsService = {
+  getAll,
+  create,
+  remove,
 }
