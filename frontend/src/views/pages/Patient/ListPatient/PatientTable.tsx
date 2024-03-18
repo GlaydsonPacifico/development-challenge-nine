@@ -2,11 +2,14 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import { useState } from 'react';
-import { Patient } from '../../../app/entities/Patient';
+import { Patient } from '../../../../app/entities/Patient';
+import { usePatientController } from './usePatientController';
 
 export function PatientTable({ patients }: { patients: Patient[] }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const { handleDeletePatient, handleEditPatient, } = usePatientController();
 
   function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     setPage(newPage);
@@ -42,10 +45,22 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
                 <TableCell>{patient.address.city} - {patient.address.state}</TableCell>
                 <TableCell>{patient.address.zipCode}</TableCell>
                 <TableCell>
-                <Button sx={{ mr: 1 }} variant="contained" startIcon={<EditIcon />} size="small">Editar</Button>
-                <Button variant="outlined" startIcon={<DeleteForeverIcon />} color="error" size="small">
-                  Apagar
-                </Button>
+                  <Button
+                    sx={{ mr: 1 }}
+                    variant="contained"
+                    startIcon={<EditIcon />}
+                    size="small"
+                    onClick={() => handleEditPatient(patient.id)}
+                  >Editar</Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteForeverIcon />}
+                    color="error"
+                    size="small"
+                    onClick={() => handleDeletePatient(patient.id)}
+                    >
+                    Apagar
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

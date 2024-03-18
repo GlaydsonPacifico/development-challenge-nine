@@ -12,7 +12,5 @@ interface CreatePatientParams {
 export async function create(params: CreatePatientParams) {
   const { data } = await httpClient.post("/patients", params);
 
-  console.log(data)
-
   return data;
 }

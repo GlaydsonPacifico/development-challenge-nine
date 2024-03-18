@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PatientsRepository } from 'src/shared/database/repositories/patients.repositories';
 import { AddressesService } from '../addresses/services/addresses.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -102,14 +102,6 @@ export class PatientsService {
   }
 
   async remove(id: string) {
-    const existsPatient = await this.patientsRepo.findUnique({
-      where: { id },
-    });
-
-    if (!existsPatient) {
-      throw new BadRequestException();
-    }
-
     await this.patientsRepo.delete({
       where: { id },
     });
