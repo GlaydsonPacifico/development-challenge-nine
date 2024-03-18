@@ -1,13 +1,20 @@
-import { Typography } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Router } from "./routers";
 
-function App() {
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  }
+});
+
+export function App() {
   return (
-    <>
-      <Typography variant="h1">
-        Página Inicial
-      </Typography>
-    </>
+    <QueryClientProvider client={queryClient} >
+      <Router />
+    </QueryClientProvider>
   )
 }
 
-export default App
