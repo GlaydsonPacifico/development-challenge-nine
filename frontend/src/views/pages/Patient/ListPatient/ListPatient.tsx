@@ -26,7 +26,7 @@ export function ListPatient() {
           </Button>
         </Link>
       </Box>
-      <PatientTable patients={patients}/>
+      <PatientTable patients={patients} />
     </>
   )
 }

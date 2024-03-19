@@ -1,15 +1,33 @@
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import { useState } from 'react';
 import { Patient } from '../../../../app/entities/Patient';
+import { useEditPatientController } from '../EditPatient/useEditPatientController';
 import { usePatientController } from './usePatientController';
 
 export function PatientTable({ patients }: { patients: Patient[] }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { handleEditPatient } = useEditPatientController();
+  const { handleDeletePatient } = usePatientController();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [patientIdToDelete, setPatientIdToDelete] = useState("");
 
-  const { handleDeletePatient, handleEditPatient, } = usePatientController();
+  function handleClickOpenDeleteDialog(patientId: string) {
+    setPatientIdToDelete(patientId);
+    setOpenDeleteDialog(true);
+  };
+
+  function handleCloseDeleteDialog() {
+    setPatientIdToDelete("");
+    setOpenDeleteDialog(false);
+  };
+
+  async function handleConfirmDelete() {
+    await handleDeletePatient(patientIdToDelete);
+    handleCloseDeleteDialog();
+  };
 
   function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     setPage(newPage);
@@ -41,24 +59,26 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
                 <TableCell>{patient.name}</TableCell>
                 <TableCell>{patient.email}</TableCell>
                 <TableCell>{new Date(patient.dateBirth).toLocaleDateString()}</TableCell>
-                <TableCell>{patient.address.street}</TableCell>
+                <TableCell>{patient.address.street}, {patient.address.number}</TableCell>
                 <TableCell>{patient.address.city} - {patient.address.state}</TableCell>
                 <TableCell>{patient.address.zipCode}</TableCell>
                 <TableCell>
                   <Button
-                    sx={{ mr: 1 }}
+                    sx={{ mr: 1, mb: { xs: 1, md: 0 } }}
                     variant="contained"
                     startIcon={<EditIcon />}
                     size="small"
                     onClick={() => handleEditPatient(patient.id)}
-                  >Editar</Button>
+                  >
+                    Editar
+                  </Button>
                   <Button
                     variant="outlined"
                     startIcon={<DeleteForeverIcon />}
                     color="error"
                     size="small"
-                    onClick={() => handleDeletePatient(patient.id)}
-                    >
+                    onClick={() => handleClickOpenDeleteDialog(patient.id)}
+                  >
                     Apagar
                   </Button>
                 </TableCell>
@@ -76,6 +96,28 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmar exclusão"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Tem certeza que deseja excluir este paciente?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

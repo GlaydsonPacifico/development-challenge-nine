@@ -44,7 +44,7 @@ export function EditPatient() {
             fullWidth
             error={!!errors.dateBirth}
             helperText={errors.dateBirth && "Data de nascimento inválida"}
-            {...register("dateBirth", { required: "Data de nascimento é obrigatória" })} // Validation rule
+            {...register("dateBirth", { required: "Data de nascimento é obrigatória" })}
           />
           <TextField
             label="Número"

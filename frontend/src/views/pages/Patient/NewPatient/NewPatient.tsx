@@ -43,8 +43,9 @@ export function NewPatient() {
             type="date"
             fullWidth
             error={!!errors.dateBirth}
+            InputLabelProps={{ shrink: true }}
             helperText={errors.dateBirth && "Data de nascimento inválida"}
-            {...register("dateBirth", { required: "Data de nascimento é obrigatória" })} // Validation rule
+            {...register("dateBirth", { required: "Data de nascimento é obrigatória" })}
           />
           <TextField
             label="Número"

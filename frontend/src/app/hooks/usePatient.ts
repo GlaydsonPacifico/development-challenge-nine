@@ -7,7 +7,14 @@ export function usePatient() {
     queryFn: patientsService.getAll,
   });
 
+  const getPatientById = async (id: string) => {
+    const patient = await patientsService.getOne(id);
+
+    return patient;
+  }
+
   return {
     patients: data ?? [],
+    getPatientById,
   }
 };
