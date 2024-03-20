@@ -7,7 +7,7 @@ export function usePatient() {
     queryFn: patientsService.getAll,
   });
 
-  const getPatientById = async (id: string) => {
+  async function getPatientById (id: string) {
     const patient = await patientsService.getOne(id);
 
     return patient;
@@ -15,6 +15,6 @@ export function usePatient() {
 
   return {
     patients: data ?? [],
-    getPatientById,
+    getPatientById
   }
-};
+}

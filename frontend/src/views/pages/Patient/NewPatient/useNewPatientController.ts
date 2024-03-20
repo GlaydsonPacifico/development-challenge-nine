@@ -11,7 +11,7 @@ const schema = yup.object().shape({
   email: yup.string().email("Informe um e-mail válido").required("Email é obrigatório"),
   dateBirth: yup.date().required(),
   number: yup.number().required("Número é obrigatório"),
-  zipCode: yup.string().required("Cep é obrigatório"),
+  zipCode: yup.string().required("Cep é obrigatório").length(8, "O CEP deve ter 8 caracteres"),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -23,6 +23,7 @@ export function useNewPatientController() {
     register,
     handleSubmit: hookFormSubmit,
     formState: { errors },
+    control,
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
@@ -51,5 +52,6 @@ export function useNewPatientController() {
     register,
     errors,
     handleSubmit,
+    control,
   }
 }

@@ -1,62 +1,108 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from 'yup';
 import { Patient } from "../../../../app/entities/Patient";
 import { usePatient } from "../../../../app/hooks/usePatient";
+import { patientsService } from "../../../../app/services/patients";
 
 const schema = yup.object().shape({
   name: yup.string().required("Nome é obrigatório"),
   email: yup.string().email("Informe um e-mail válido").required("Email é obrigatório"),
   dateBirth: yup.date().required(),
   number: yup.number().required("Número é obrigatório"),
-  zipCode: yup.string().required("Cep é obrigatório"),
+  zipCode: yup.string().required("Cep é obrigatório").length(8, "O CEP deve ter 8 caracteres"),
+  street: yup.string().nullable(),
+  city: yup.string().nullable(),
+  state: yup.string().nullable(),
 });
 
 type FormData = yup.InferType<typeof schema>;
 
 export function useEditPatientController() {
   const navigate = useNavigate();
-  const { getPatientById  } = usePatient();
+  const { getPatientById } = usePatient();
+  const { id } = useParams();
 
-  const [patient, setPatient] = useState<Patient | null>(null);
+  const [patientData, setPatientData] = useState<Patient | null>(null);
 
   useEffect(() => {
-    console.log(patient);
-  }, [patient]);
+    const fetchPatient = async () => {
+      if (id) {
+        const patient = await getPatientById(id);
+        if (patient) {
+          setPatientData(patient);
+        }
+      }
+    };
 
+    fetchPatient();
+  }, [id]);
 
-  async function handleEditPatient(id: string) {
-    const patient = await getPatientById(id);
-    navigate(`/pacientes/${id}/editar`);
-    setPatient(patient);
+  useEffect(() => {
+    if (patientData) {
+      setValue('name', patientData.name);
+      setValue('email', patientData.email);
+      setValue('zipCode', patientData.address?.zipCode);
+      setValue('dateBirth', new Date(patientData.dateBirth));
+      setValue('number', patientData.address?.number);
+      setValue('street', patientData.address.street);
+      setValue('city', patientData.address.city);
+      setValue('state', patientData.address.state);
+    }
+  }, [patientData]);
 
-    console.log(patient)
-    return patient;
-  }
-
-  console.log(patient?.name)
 
   const {
     register,
     handleSubmit: hookFormSubmit,
     formState: { errors },
+    control,
+    setValue
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      name: patient?.name,
-      email: patient?.email,
-      zipCode: patient?.address.zipCode,
-      number: patient?.address.number,
-    },
+  });
+
+
+  async function handleEditPatient(id: string) {
+    try {
+      navigate(`/pacientes/${id}/editar`);
+    } catch (error) {
+    }
+  }
+
+  const {
+    mutateAsync: updatePatient
+  } = useMutation({
+    mutationFn: patientsService.update,
+  });
+
+  const queryClient = useQueryClient();
+
+  const handleSubmit = hookFormSubmit(async (data) => {
+    try {
+      if (id) {
+        await updatePatient({
+          id,
+          ...data
+        });
+        queryClient.invalidateQueries({ queryKey: ['patients'] });
+        toast.success("Paciente atualizado")
+        navigate('/pacientes');
+      }
+    } catch (error) {
+      toast.error("Erro ao atualizar o paciente")
+    }
   });
 
   return {
     handleEditPatient,
-    getPatientById,
     register,
     errors,
-    hookFormSubmit
-  }
+    handleSubmit,
+    control
+  };
 }
