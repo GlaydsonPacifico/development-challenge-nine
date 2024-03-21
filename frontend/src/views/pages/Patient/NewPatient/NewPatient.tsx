@@ -1,9 +1,16 @@
+import UndoIcon from '@mui/icons-material/Undo';
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import { useNewPatientController } from "./useNewPatientController";
 
 export function NewPatient() {
   const { errors, register, handleSubmit, control } = useNewPatientController();
+  const navigate = useNavigate();
+
+  function handleGoBackPage () {
+    navigate("/pacientes");
+  }
 
   return (
     <>
@@ -14,7 +21,7 @@ export function NewPatient() {
           <Controller
             control={control}
             name="name"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Nome"
                 type="text"
@@ -23,14 +30,13 @@ export function NewPatient() {
                 helperText={errors.name?.message}
                 {...register("name")}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Email"
                 type="email"
@@ -39,14 +45,13 @@ export function NewPatient() {
                 helperText={errors.email?.message}
                 {...register("email")}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="zipCode"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="CEP"
                 type="text"
@@ -55,7 +60,6 @@ export function NewPatient() {
                 helperText={errors.zipCode?.message}
                 {...register("zipCode")}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
@@ -65,7 +69,7 @@ export function NewPatient() {
         <Controller
             control={control}
             name="dateBirth"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Date de Nascimento"
                 id="dateBirth"
@@ -76,14 +80,13 @@ export function NewPatient() {
                 helperText={errors.dateBirth && "Data de nascimento inválida"}
                 {...register("dateBirth")}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="number"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Número"
                 type="number"
@@ -92,12 +95,14 @@ export function NewPatient() {
                 helperText={errors.number && "Número é obrigatório"}
                 {...register("number")}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
         </Stack>
-        <Button type="submit" variant="contained">
+        <Button onClick={handleGoBackPage} variant="contained">
+          <UndoIcon />
+        </Button>
+        <Button type="submit" variant="contained" sx={{ ml: 1 }}>
           Cadastrar
         </Button>
       </form>

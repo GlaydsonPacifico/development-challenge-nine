@@ -12,21 +12,38 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
   const { handleEditPatient } = useEditPatientController();
   const { handleDeletePatient } = usePatientController();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [patientIdToDelete, setPatientIdToDelete] = useState("");
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [patientId, setPatientId] = useState("");
+
 
   function handleClickOpenDeleteDialog(patientId: string) {
-    setPatientIdToDelete(patientId);
+    setPatientId(patientId);
     setOpenDeleteDialog(true);
   };
 
   function handleCloseDeleteDialog() {
-    setPatientIdToDelete("");
+    setPatientId("");
     setOpenDeleteDialog(false);
   };
 
   async function handleConfirmDelete() {
-    await handleDeletePatient(patientIdToDelete);
+    await handleDeletePatient(patientId);
     handleCloseDeleteDialog();
+  };
+
+    function handleClickOpenEditDialog(patientId: string) {
+      setPatientId(patientId);
+    setOpenEditDialog(true);
+  };
+
+  function handleCloseEditDialog() {
+    setPatientId("");
+    setOpenEditDialog(false);
+  };
+
+  async function handleConfirmEdit() {
+    await handleEditPatient(patientId);
+    handleCloseEditDialog();
   };
 
   function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
@@ -68,7 +85,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
                     variant="contained"
                     startIcon={<EditIcon />}
                     size="small"
-                    onClick={() => handleEditPatient(patient.id)}
+                    onClick={() => handleClickOpenEditDialog(patient.id)}
                   >
                     Editar
                   </Button>
@@ -114,6 +131,28 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
             Cancelar
           </Button>
           <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openEditDialog}
+        onClose={handleCloseEditDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmar edição"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Deseja editar este paciente?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmEdit} color="primary" autoFocus>
             Confirmar
           </Button>
         </DialogActions>

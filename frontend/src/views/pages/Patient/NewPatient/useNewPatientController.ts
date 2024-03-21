@@ -44,7 +44,13 @@ export function useNewPatientController() {
       toast.success("Paciente cadastrado com sucesso")
       navigate('/pacientes');
     } catch (error) {
-      toast.error("Erro ao criar o paciente")
+      if (error && (error as any).response && (error as any).response.status === 404) {
+        toast.error("CEP não encontrado");
+      } else if (error && (error as any).response && (error as any).response.status === 409) {
+        toast.error("Email já em uso");
+      } else {
+        toast.error("Erro ao criar o paciente")
+      }
     }
   });
 

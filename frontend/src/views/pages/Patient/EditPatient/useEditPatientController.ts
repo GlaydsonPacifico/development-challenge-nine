@@ -49,11 +49,13 @@ export function useEditPatientController() {
       setValue('zipCode', patientData.address?.zipCode);
       setValue('dateBirth', new Date(patientData.dateBirth));
       setValue('number', patientData.address?.number);
-      setValue('street', patientData.address.street);
-      setValue('city', patientData.address.city);
-      setValue('state', patientData.address.state);
+      setValue('street', patientData.address?.street);
+      setValue('city', patientData.address?.city);
+      setValue('state', patientData.address?.state);
     }
   }, [patientData]);
+
+
 
 
   const {
@@ -84,6 +86,10 @@ export function useEditPatientController() {
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
+      if(!id) {
+        return;
+      }
+
       if (id) {
         await updatePatient({
           id,
@@ -94,7 +100,11 @@ export function useEditPatientController() {
         navigate('/pacientes');
       }
     } catch (error) {
-      toast.error("Erro ao atualizar o paciente")
+      if (error && (error as any).response && (error as any).response.status === 404) {
+        toast.error("CEP não encontrado");
+      } else {
+        toast.error("Erro ao atualizar o paciente");
+      }
     }
   });
 

@@ -1,10 +1,16 @@
+import UndoIcon from '@mui/icons-material/Undo';
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useEditPatientController } from "./useEditPatientController";
-
 
 export function EditPatient() {
   const { errors, register, handleSubmit, control } = useEditPatientController();
+  const navigate = useNavigate();
+
+  function handleGoBackPage () {
+    navigate("/pacientes");
+  }
 
   return (
     <>
@@ -15,7 +21,7 @@ export function EditPatient() {
           <Controller
             control={control}
             name="name"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Nome"
                 type="text"
@@ -25,14 +31,13 @@ export function EditPatient() {
                 {...register("name")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Email"
                 type="email"
@@ -43,14 +48,13 @@ export function EditPatient() {
                 disabled
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="zipCode"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="CEP"
                 type="text"
@@ -60,7 +64,6 @@ export function EditPatient() {
                 {...register("zipCode")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
@@ -70,8 +73,7 @@ export function EditPatient() {
           <Controller
             control={control}
             name="dateBirth"
-            render={({ field: { onChange, value } }) => (
-              console.log(value),
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Date de Nascimento"
                 type="date"
@@ -81,14 +83,13 @@ export function EditPatient() {
                 {...register("dateBirth")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="number"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <TextField
                 label="Número"
                 type="number"
@@ -98,7 +99,6 @@ export function EditPatient() {
                 {...register("number")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
-                value={value}
               />
             )}
           />
@@ -151,7 +151,10 @@ export function EditPatient() {
             )}
           />
         </Stack>
-        <Button type="submit" variant="contained">
+        <Button onClick={handleGoBackPage} variant="contained">
+          <UndoIcon />
+        </Button>
+        <Button type="submit" variant="contained" sx={{ ml: 1 }}>
           Atualizar
         </Button>
       </form>
