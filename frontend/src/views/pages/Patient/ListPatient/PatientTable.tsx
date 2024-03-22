@@ -55,6 +55,13 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
     setPage(0);
   };
 
+  function formatZipCode (zipCode: string) {
+    if (zipCode && zipCode.length === 8) {
+      return zipCode.substring(0, 5) + '-' + zipCode.substring(5);
+    }
+    return zipCode;
+  }
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -78,7 +85,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
                 <TableCell>{new Date(patient.dateBirth).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</TableCell>
                 <TableCell>{patient.address.street}, {patient.address.number}</TableCell>
                 <TableCell>{patient.address.city} - {patient.address.state}</TableCell>
-                <TableCell>{patient.address.zipCode}</TableCell>
+                <TableCell>{formatZipCode(patient.address.zipCode)}</TableCell>
                 <TableCell>
                   <Button
                     sx={{ mr: 1, mb: { xs: 1, md: 0 } }}
@@ -112,6 +119,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Linhas por página:"
       />
 
       <Dialog
