@@ -8,7 +8,7 @@ export function EditPatient() {
   const { errors, register, handleSubmit, control } = useEditPatientController();
   const navigate = useNavigate();
 
-  function handleGoBackPage () {
+  function handleGoBackPage() {
     navigate("/pacientes");
   }
 
@@ -76,20 +76,29 @@ export function EditPatient() {
           <Controller
             control={control}
             name="dateBirth"
-            render={({ field: { onChange, value } }) => (
-              <TextField
-                label="Date de Nascimento"
-                type="date"
-                fullWidth
-                error={!!errors.dateBirth}
-                helperText={errors.dateBirth && "Data de nascimento inválida"}
-                {...register("dateBirth")}
-                InputLabelProps={{ shrink: true }}
-                onChange={onChange}
-                value={value}
-              />
-            )}
+            render={({ field: { onChange, value } }) => {
+              const isValidDate = value instanceof Date && !isNaN(value.getTime());
+
+              const formattedDate = isValidDate
+                ? value.toISOString().split('T')[0]
+                : '';
+
+              return (
+                <TextField
+                  label="Date de Nascimento"
+                  type="date"
+                  fullWidth
+                  error={!!errors.dateBirth}
+                  helperText={errors.dateBirth && "Data de nascimento inválida"}
+                  {...register("dateBirth")}
+                  InputLabelProps={{ shrink: true }}
+                  onChange={onChange}
+                  value={formattedDate}
+                />
+              );
+            }}
           />
+
           <Controller
             control={control}
             name="number"

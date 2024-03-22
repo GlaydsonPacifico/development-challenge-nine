@@ -75,7 +75,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
               <TableRow key={patient.id}>
                 <TableCell>{patient.name}</TableCell>
                 <TableCell>{patient.email}</TableCell>
-                <TableCell>{new Date(patient.dateBirth).toLocaleDateString()}</TableCell>
+                <TableCell>{new Date(patient.dateBirth).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</TableCell>
                 <TableCell>{patient.address.street}, {patient.address.number}</TableCell>
                 <TableCell>{patient.address.city} - {patient.address.state}</TableCell>
                 <TableCell>{patient.address.zipCode}</TableCell>
