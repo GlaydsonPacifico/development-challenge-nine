@@ -4,7 +4,11 @@ import { PatientsModule } from './modules/patients/patients.module';
 import { DatabaseModule } from './shared/database/database.module';
 
 @Module({
-  imports: [PatientsModule, DatabaseModule, AddressesModule],
+  imports: [
+    PatientsModule,
+    DatabaseModule,
+    AddressesModule
+  ],
   controllers: [],
   providers: [],
 })
