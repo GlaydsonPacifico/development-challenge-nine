@@ -48,6 +48,9 @@ export class PatientsService {
 
   async findAll() {
     return this.patientsRepo.findMany({
+      orderBy: {
+        name: 'asc',
+      },
       include: {
         address: true,
       }
