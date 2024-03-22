@@ -46,7 +46,7 @@ export function PatientTable({ patients }: { patients: Patient[] }) {
     handleCloseEditDialog();
   };
 
-  function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
+  function handleChangePage(_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) {
     setPage(newPage);
   }
 

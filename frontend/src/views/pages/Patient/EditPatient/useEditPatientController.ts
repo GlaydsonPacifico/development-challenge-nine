@@ -29,6 +29,7 @@ export function useEditPatientController() {
 
   const [patientData, setPatientData] = useState<Patient | null>(null);
 
+
   useEffect(() => {
     const fetchPatient = async () => {
       if (id) {
@@ -54,9 +55,6 @@ export function useEditPatientController() {
       setValue('state', patientData.address?.state);
     }
   }, [patientData]);
-
-
-
 
   const {
     register,

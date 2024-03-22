@@ -21,7 +21,7 @@ export function EditPatient() {
           <Controller
             control={control}
             name="name"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 label="Nome"
                 type="text"
@@ -31,13 +31,14 @@ export function EditPatient() {
                 {...register("name")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
+                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="email"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 label="Email"
                 type="email"
@@ -48,13 +49,14 @@ export function EditPatient() {
                 disabled
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
+                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="zipCode"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 label="CEP"
                 type="text"
@@ -64,6 +66,7 @@ export function EditPatient() {
                 {...register("zipCode")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
+                value={value}
               />
             )}
           />
@@ -73,7 +76,7 @@ export function EditPatient() {
           <Controller
             control={control}
             name="dateBirth"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 label="Date de Nascimento"
                 type="date"
@@ -83,13 +86,14 @@ export function EditPatient() {
                 {...register("dateBirth")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
+                value={value}
               />
             )}
           />
           <Controller
             control={control}
             name="number"
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <TextField
                 label="Número"
                 type="number"
@@ -99,6 +103,7 @@ export function EditPatient() {
                 {...register("number")}
                 InputLabelProps={{ shrink: true }}
                 onChange={onChange}
+                value={value}
               />
             )}
           />
