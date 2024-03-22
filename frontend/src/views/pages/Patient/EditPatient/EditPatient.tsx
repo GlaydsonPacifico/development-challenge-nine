@@ -12,6 +12,10 @@ export function EditPatient() {
     navigate("/pacientes");
   }
 
+  function formattedDate (value: Date) {
+    return value ? new Date(value).toISOString().split('T')[0] : '';
+  }
+
   return (
     <>
       <Typography variant="h5" sx={{ mb: 4 }}>Editar Paciente</Typography>
@@ -76,15 +80,8 @@ export function EditPatient() {
           <Controller
             control={control}
             name="dateBirth"
-            render={({ field: { onChange, value } }) => {
-              const isValidDate = value instanceof Date && !isNaN(value.getTime());
-
-              const formattedDate = isValidDate
-                ? value.toISOString().split('T')[0]
-                : '';
-
-              return (
-                <TextField
+            render={({ field: { onChange, value } }) => (
+              <TextField
                   label="Date de Nascimento"
                   type="date"
                   fullWidth
@@ -93,10 +90,9 @@ export function EditPatient() {
                   {...register("dateBirth")}
                   InputLabelProps={{ shrink: true }}
                   onChange={onChange}
-                  value={formattedDate}
+                  value={formattedDate(value)}
                 />
-              );
-            }}
+            )}
           />
 
           <Controller
