@@ -29,6 +29,7 @@ services:
       DATABASE_URL: mysql://root:root@db:3306/DBForTest
     volumes:
       - ./src:/usr/backend/src
+    command: sh -c "/usr/wait-for-it.sh db:3306 -- npm run start:dev"
 
   frontend:
     build:
