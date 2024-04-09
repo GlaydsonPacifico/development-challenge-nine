@@ -1,9 +1,4 @@
-FROM node:lts-buster
-
-FROM mysql/mysql-server:8.0
-
-# Install bash
-RUN apk --no-cache add bash
+FROM node:20-alpine
 
 WORKDIR /app/backend
 
